@@ -21,7 +21,10 @@ class FakeTranscript:
         self._texts = texts
 
     def fetch(self):
-        return [SimpleNamespace(text=t) for t in self._texts]
+        return [
+            SimpleNamespace(start=float(i * 5), text=t)
+            for i, t in enumerate(self._texts)
+        ]
 
 
 class FakeApi:
@@ -49,7 +52,7 @@ def test_prefers_manual_over_generated_in_same_language():
         manual=[FakeTranscript("en", False, ["manual en"])],
         generated=[FakeTranscript("en", True, ["auto en"])],
     ))
-    assert fetch_transcript(VID, ("en",), api=api) == ["manual en"]
+    assert fetch_transcript(VID, ("en",), api=api) == [(0.0, "manual en")]
 
 
 def test_respects_language_priority_order():
@@ -57,7 +60,7 @@ def test_respects_language_priority_order():
         FakeTranscript("en", False, ["manual en"]),
         FakeTranscript("ru", False, ["manual ru"]),
     ]))
-    assert fetch_transcript(VID, ("ru", "en"), api=api) == ["manual ru"]
+    assert fetch_transcript(VID, ("ru", "en"), api=api) == [(0.0, "manual ru")]
 
 
 def test_generated_in_priority_language_beats_manual_in_later():
@@ -65,12 +68,12 @@ def test_generated_in_priority_language_beats_manual_in_later():
         manual=[FakeTranscript("en", False, ["manual en"])],
         generated=[FakeTranscript("ru", True, ["auto ru"])],
     ))
-    assert fetch_transcript(VID, ("ru", "en"), api=api) == ["auto ru"]
+    assert fetch_transcript(VID, ("ru", "en"), api=api) == [(0.0, "auto ru")]
 
 
 def test_falls_back_to_any_available_language():
     api = FakeApi(make_list(generated=[FakeTranscript("fr", True, ["auto fr"])]))
-    assert fetch_transcript(VID, ("en",), api=api) == ["auto fr"]
+    assert fetch_transcript(VID, ("en",), api=api) == [(0.0, "auto fr")]
 
 
 def test_fallback_prefers_manual_transcripts():
@@ -78,7 +81,12 @@ def test_fallback_prefers_manual_transcripts():
         manual=[FakeTranscript("fr", False, ["manual fr"])],
         generated=[FakeTranscript("de", True, ["auto de"])],
     ))
-    assert fetch_transcript(VID, ("en",), api=api) == ["manual fr"]
+    assert fetch_transcript(VID, ("en",), api=api) == [(0.0, "manual fr")]
+
+
+def test_returns_start_times_with_texts():
+    api = FakeApi(make_list(manual=[FakeTranscript("en", False, ["first", "second"])]))
+    assert fetch_transcript(VID, ("en",), api=api) == [(0.0, "first"), (5.0, "second")]
 
 
 def test_captions_disabled():

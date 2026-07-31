@@ -20,8 +20,8 @@ def fetch_transcript(
     video_id: str,
     languages: Sequence[str] = ("en",),
     api: YouTubeTranscriptApi | None = None,
-) -> list[str]:
-    """Return caption fragment texts for the best transcript.
+) -> list[tuple[float, str]]:
+    """Return (start_seconds, text) caption fragments for the best transcript.
 
     Selection: requested languages in priority order, manual captions preferred
     over auto-generated within each language; if no requested language exists,
@@ -48,4 +48,4 @@ def fetch_transcript(
         fetched = transcript.fetch()
     except CouldNotRetrieveTranscript as exc:
         raise TranscriptError(f"could not retrieve captions ({type(exc).__name__})") from exc
-    return [snippet.text for snippet in fetched]
+    return [(snippet.start, snippet.text) for snippet in fetched]
