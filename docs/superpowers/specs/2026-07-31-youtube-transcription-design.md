@@ -21,7 +21,8 @@ per video.
 
 - Whisper/speech-to-text fallback for videos without captions.
 - Parallel downloads.
-- Timestamped output.
+- ~~Timestamped output.~~ Added later — see
+  `2026-07-31-transcript-timestamps-design.md`.
 - Playlist/channel expansion.
 - Any GUI or web interface.
 
