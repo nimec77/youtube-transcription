@@ -15,11 +15,13 @@ uv sync
 
 ## Usage
 
+Run the tool via `uv run yt-transcribe`:
+
 ```bash
-yt-transcribe <url> [<url> …]           # one or more videos
-yt-transcribe -f videos.txt -o ./out    # list file; positional URLs may be mixed in
-yt-transcribe --lang ru,en <url>        # caption language priority
-yt-transcribe --force <url>             # overwrite existing output files
+uv run yt-transcribe <url> [<url> …]           # one or more videos
+uv run yt-transcribe -f videos.txt -o ./out    # list file; positional URLs may be mixed in
+uv run yt-transcribe --lang ru,en <url>        # caption language priority
+uv run yt-transcribe --force <url>             # overwrite existing output files
 ```
 
 ### Flags
