@@ -8,6 +8,11 @@ and this project adheres to
 
 ## [Unreleased]
 
+### Added
+
+- `--version` flag: `yt-transcribe --version` prints the installed version and
+  exits.
+
 ## [0.2.0] — 2026-07-31
 
 ### Added

@@ -1,6 +1,7 @@
 """End-to-end CLI tests with all network access mocked."""
 import pytest
 
+import yt_transcribe
 from yt_transcribe import cli, fetcher, writer
 from yt_transcribe.fetcher import TranscriptError
 
@@ -96,3 +97,10 @@ def test_rerun_skips_existing_and_force_overwrites(tmp_path, capsys, fake_networ
 def test_lang_flag_passes_priority_list(tmp_path, fake_network):
     cli.main([GOOD_ID, "-o", str(tmp_path / "out"), "--lang", "ru,en"])
     assert fake_network["languages"] == ["ru", "en"]
+
+
+def test_version_flag_prints_version_and_exits(capsys):
+    with pytest.raises(SystemExit) as excinfo:
+        cli.main(["--version"])
+    assert excinfo.value.code == 0
+    assert capsys.readouterr().out.strip() == f"yt-transcribe {yt_transcribe.__version__}"

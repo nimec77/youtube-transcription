@@ -5,7 +5,7 @@ import argparse
 from dataclasses import dataclass
 from pathlib import Path
 
-from yt_transcribe import fetcher, formatter, urls, writer
+from yt_transcribe import __version__, fetcher, formatter, urls, writer
 
 _USAGE_ERROR = 2
 
@@ -32,6 +32,7 @@ def build_parser() -> argparse.ArgumentParser:
                         help="comma-separated caption-language priority list (default: en)")
     parser.add_argument("--force", action="store_true",
                         help="overwrite existing output files (default: skip them)")
+    parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
     return parser
 
 
