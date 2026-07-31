@@ -21,3 +21,6 @@ transcripts/
 
 # OS
 .DS_Store
+
+# Claude worktrees
+.claude/worktrees/
