@@ -2,14 +2,22 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
+from typing import Protocol
 
 from youtube_transcript_api import (
     CouldNotRetrieveTranscript,
     NoTranscriptFound,
+    TranscriptList,
     TranscriptsDisabled,
     VideoUnavailable,
     YouTubeTranscriptApi,
 )
+
+
+class TranscriptApi(Protocol):
+    """The part of YouTubeTranscriptApi that fetch_transcript relies on."""
+
+    def list(self, video_id: str) -> TranscriptList: ...
 
 
 class TranscriptError(Exception):
@@ -19,7 +27,7 @@ class TranscriptError(Exception):
 def fetch_transcript(
     video_id: str,
     languages: Sequence[str] = ("en",),
-    api: YouTubeTranscriptApi | None = None,
+    api: TranscriptApi | None = None,
 ) -> list[tuple[float, str]]:
     """Return (start_seconds, text) caption fragments for the best transcript.
 

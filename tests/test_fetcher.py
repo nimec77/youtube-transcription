@@ -28,13 +28,15 @@ class FakeTranscript:
 
 
 class FakeApi:
-    def __init__(self, transcript_list=None, error=None):
+    def __init__(self, transcript_list: TranscriptList | None = None,
+                 error: Exception | None = None):
         self._transcript_list = transcript_list
         self._error = error
 
-    def list(self, video_id):
+    def list(self, video_id: str) -> TranscriptList:
         if self._error is not None:
             raise self._error
+        assert self._transcript_list is not None
         return self._transcript_list
 
 

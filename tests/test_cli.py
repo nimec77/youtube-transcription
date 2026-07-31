@@ -10,7 +10,7 @@ BAD_ID = "bbbbbbbbbbb"
 
 @pytest.fixture
 def fake_network(monkeypatch):
-    calls = {"languages": None}
+    calls: dict[str, list[str] | None] = {"languages": None}
 
     def fake_fetch(video_id, languages=("en",), api=None):
         calls["languages"] = list(languages)
