@@ -5,7 +5,8 @@ Download YouTube video transcripts (captions) as plain-text files.
 A Python CLI that fetches the captions YouTube already hosts — manual or
 auto-generated — with no API key, no audio download, and no speech-to-text.
 Input: a single video URL, multiple URLs, or a file with one URL per line;
-output: a folder of plain-text transcript files, one per video.
+output: a folder of plain-text transcript files, one per video, with
+`[M:SS]`-timestamped paragraphs.
 
 ## Install
 
@@ -42,8 +43,18 @@ uv run yt-transcribe --force <url>             # overwrite existing output files
 - `<id>` — bare 11-character video ID
 
 Output: one `.txt` per video in the output folder (default `./transcripts/`),
-named `<title>_<video-id>.txt`. Already-downloaded videos are skipped unless
-`--force` is given.
+named `<title>_<video-id>.txt`. Each paragraph starts with the video time of
+its first sentence — `[M:SS]`, or `[H:MM:SS]` past the one-hour mark:
+
+```text
+[0:00] Welcome back to the channel. Today we are looking at...
+
+[1:12] So the first thing you will notice is...
+```
+
+Already-downloaded videos are skipped unless `--force` is given; files saved
+before timestamps were added keep the old format until regenerated with
+`--force`.
 
 ### Exit codes
 
@@ -57,4 +68,7 @@ named `<title>_<video-id>.txt`. Already-downloaded videos are skipped unless
 uv run pytest
 ```
 
-Design spec: [docs/superpowers/specs/2026-07-31-youtube-transcription-design.md](docs/superpowers/specs/2026-07-31-youtube-transcription-design.md)
+Design specs: [core CLI](docs/superpowers/specs/2026-07-31-youtube-transcription-design.md) ·
+[paragraph timestamps](docs/superpowers/specs/2026-07-31-transcript-timestamps-design.md)
+
+Changes: [CHANGELOG.md](CHANGELOG.md)

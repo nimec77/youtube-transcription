@@ -9,9 +9,11 @@ captions YouTube already hosts (via `youtube-transcript-api`), no API key or
 audio download. Input: video URLs (args or list file); output: one plain-text
 file per video with `[M:SS]`-stamped paragraphs.
 
-The authoritative design spec is
-`docs/superpowers/specs/2026-07-31-youtube-transcription-design.md` — read it
-before implementing or changing behavior. Deliberate non-goals (Whisper
+The authoritative design specs are
+`docs/superpowers/specs/2026-07-31-youtube-transcription-design.md` and, for
+paragraph timestamps,
+`docs/superpowers/specs/2026-07-31-transcript-timestamps-design.md` — read
+them before implementing or changing behavior. Deliberate non-goals (Whisper
 fallback, parallelism, playlists) are listed there; don't add them
 unprompted.
 
@@ -54,5 +56,7 @@ YouTube calls in the suite.
 ## Status
 
 Implemented and tested. All five modules are complete with per-module pytest
-suites (network fully mocked). See the design spec for behavior and the plan
-in `docs/superpowers/plans/2026-07-31-youtube-transcription.md` for history.
+suites (network fully mocked). Paragraph timestamps were added after the
+initial build — see the specs above for behavior and the plans in
+`docs/superpowers/plans/` for history. User-visible changes are tracked in
+`CHANGELOG.md`.
