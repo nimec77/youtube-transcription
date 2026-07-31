@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 `yt-transcribe` — a Python CLI that downloads YouTube video transcripts using the
 captions YouTube already hosts (via `youtube-transcript-api`), no API key or
 audio download. Input: video URLs (args or list file); output: one plain-text
-file per video.
+file per video with `[M:SS]`-stamped paragraphs.
 
 The authoritative design spec is
 `docs/superpowers/specs/2026-07-31-youtube-transcription-design.md` — read it
@@ -38,8 +38,9 @@ others — keep it that way:
   `shorts/`, `live/`, bare 11-char ID) to a video ID
 - `fetcher.py` — transcript selection/fetch via `youtube-transcript-api`:
   requested languages in priority order, human-made captions preferred over
-  auto-generated, then any available
-- `formatter.py` — join caption fragments into clean readable paragraphs
+  auto-generated, then any available; returns `(start_seconds, text)` tuples
+- `formatter.py` — join caption fragments into clean readable paragraphs,
+  each prefixed with a `[M:SS]` / `[H:MM:SS]` video timestamp
 - `writer.py` — video title via YouTube oEmbed (keyless), filename
   sanitization, writes `<title>_<id>.txt`; oEmbed failure degrades to
   `<id>.txt`, never fails the video
