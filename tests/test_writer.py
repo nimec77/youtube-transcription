@@ -53,6 +53,18 @@ def test_fetch_title_bad_json_returns_none(monkeypatch):
     assert fetch_title(VID) is None
 
 
+def test_fetch_title_non_dict_payload_returns_none(monkeypatch):
+    monkeypatch.setattr(writer.requests, "get",
+                        lambda *a, **k: FakeResponse([]))
+    assert fetch_title(VID) is None
+
+
+def test_fetch_title_null_payload_returns_none(monkeypatch):
+    monkeypatch.setattr(writer.requests, "get",
+                        lambda *a, **k: FakeResponse(None))
+    assert fetch_title(VID) is None
+
+
 def test_sanitize_replaces_path_and_special_chars():
     assert sanitize_title('AC/DC: "Best" <of> \\ all?') == "AC DC Best of all"
 

@@ -20,7 +20,10 @@ def fetch_title(video_id: str) -> str | None:
             timeout=_OEMBED_TIMEOUT,
         )
         response.raise_for_status()
-        title = response.json().get("title")
+        payload = response.json()
+        if not isinstance(payload, dict):
+            return None
+        title = payload.get("title")
     except (requests.RequestException, ValueError):
         return None
     return title if isinstance(title, str) and title.strip() else None
