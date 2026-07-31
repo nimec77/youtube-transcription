@@ -71,3 +71,20 @@ def test_unpunctuated_text_stays_single_paragraph():
     fragments = [(0.0, "word " * 200)]
     result = format_transcript(fragments)
     assert result == "[0:00] " + ("word " * 200).strip() + "\n"
+
+
+def test_paragraph_break_mid_fragment_uses_containing_fragment_start():
+    # The second sentence starts inside the first fragment (t=10), then a
+    # paragraph break lands on it; its stamp must be the containing
+    # fragment's start ([0:10]), not the following fragment's ([1:40]).
+    filler = "x" * 590 + "."
+    fragments = [
+        (10.0, filler + " Second sentence begins here"),
+        (100.0, "and ends in the next fragment."),
+    ]
+    result = format_transcript(fragments)
+    paragraphs = result.strip("\n").split("\n\n")
+    assert paragraphs == [
+        f"[0:10] {filler}",
+        "[0:10] Second sentence begins here and ends in the next fragment.",
+    ]
