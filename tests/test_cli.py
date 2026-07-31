@@ -57,6 +57,14 @@ def test_missing_list_file_is_usage_error(tmp_path):
     assert excinfo.value.code == 2
 
 
+def test_undecodable_list_file_is_usage_error(tmp_path):
+    bad_file = tmp_path / "bad.txt"
+    bad_file.write_bytes(b"\xff\xfe\x00bad")
+    with pytest.raises(SystemExit) as excinfo:
+        cli.main(["-f", str(bad_file)])
+    assert excinfo.value.code == 2
+
+
 def test_list_file_and_positional_combined(tmp_path, fake_network):
     listfile = tmp_path / "videos.txt"
     listfile.write_text(f"# comment\n\n{GOOD_ID}\n", encoding="utf-8")

@@ -63,7 +63,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.file:
         try:
             refs.extend(urls.read_url_file(args.file))
-        except OSError as exc:
+        except (OSError, UnicodeDecodeError) as exc:
             parser.exit(_USAGE_ERROR, f"error: cannot read list file: {exc}\n")
     if not refs:
         parser.exit(_USAGE_ERROR, "error: no video URLs given (pass URLs or --file)\n")
