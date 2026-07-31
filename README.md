@@ -2,8 +2,10 @@
 
 Download YouTube video transcripts (captions) as plain-text files.
 
-Fetches the captions YouTube already hosts — manual or auto-generated — with no
-API key, no audio download, and no speech-to-text.
+A Python CLI that fetches the captions YouTube already hosts — manual or
+auto-generated — with no API key, no audio download, and no speech-to-text.
+Input: a single video URL, multiple URLs, or a file with one URL per line;
+output: a folder of plain-text transcript files, one per video.
 
 ## Install
 
@@ -14,18 +16,38 @@ uv sync
 ## Usage
 
 ```bash
-yt-transcribe <url> [<url> ...]           # one or more videos
-yt-transcribe -f videos.txt -o ./out      # list file, one URL per line
-yt-transcribe --lang ru,en <url>          # caption language priority
-yt-transcribe --force <url>               # overwrite existing output files
+yt-transcribe <url> [<url> …]           # one or more videos
+yt-transcribe -f videos.txt -o ./out    # list file; positional URLs may be mixed in
+yt-transcribe --lang ru,en <url>        # caption language priority
+yt-transcribe --force <url>             # overwrite existing output files
 ```
 
-Accepted video references: `watch?v=` URLs, `youtu.be/` short links, `shorts/`,
-`live/`, and bare 11-character video IDs.
+### Flags
+
+| Flag | Default | Meaning |
+|------|---------|---------|
+| `-f, --file PATH` | — | File with one URL per line; blank lines and `#` comments ignored |
+| `-o, --output DIR` | `./transcripts/` | Output folder, created if missing |
+| `--lang CODES` | `en` | Comma-separated caption-language priority list |
+| `--force` | off | Overwrite existing `.txt` files (default: skip already-downloaded) |
+
+### Accepted video references
+
+- `watch?v=<id>` — full YouTube URL
+- `youtu.be/<id>` — short link
+- `shorts/<id>` — YouTube Shorts
+- `live/<id>` — YouTube Live
+- `<id>` — bare 11-character video ID
 
 Output: one `.txt` per video in the output folder (default `./transcripts/`),
 named `<title>_<video-id>.txt`. Already-downloaded videos are skipped unless
 `--force` is given.
+
+### Exit codes
+
+- **0** — all videos processed successfully
+- **1** — one or more videos failed (transcript unavailable, private video, etc.)
+- **2** — usage error (no input given, list file missing, invalid arguments)
 
 ## Development
 

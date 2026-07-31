@@ -52,6 +52,6 @@ YouTube calls in the suite.
 
 ## Status
 
-Scaffold only: module files are stubs, `cli.main()` raises `NotImplementedError`.
-Implementation follows the superpowers flow — spec is approved; next step is a
-written implementation plan (`writing-plans` skill), then TDD per module.
+Implemented and tested. All five modules are complete with per-module pytest
+suites (network fully mocked). See the design spec for behavior and the plan
+in `docs/superpowers/plans/2026-07-31-youtube-transcription.md` for history.
