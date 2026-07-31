@@ -22,5 +22,6 @@ transcripts/
 # OS
 .DS_Store
 
-# Claude worktrees
-.claude/worktrees/
+# Claude (keep project skills tracked)
+.claude/*
+!.claude/skills/
