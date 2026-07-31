@@ -16,7 +16,7 @@ def fake_network(monkeypatch):
         calls["languages"] = list(languages)
         if video_id == BAD_ID:
             raise TranscriptError("captions disabled")
-        return ["Hello world.", "More text here."]
+        return [(0.0, "Hello world."), (2.0, "More text here.")]
 
     monkeypatch.setattr(fetcher, "fetch_transcript", fake_fetch)
     monkeypatch.setattr(writer, "fetch_title", lambda video_id: f"Video {video_id}")
@@ -30,7 +30,7 @@ def test_single_video_saved(tmp_path, capsys, fake_network):
     files = list(out.glob("*.txt"))
     assert len(files) == 1
     assert files[0].name == f"Video {GOOD_ID}_{GOOD_ID}.txt"
-    assert files[0].read_text(encoding="utf-8") == "Hello world. More text here.\n"
+    assert files[0].read_text(encoding="utf-8") == "[0:00] Hello world. More text here.\n"
     assert "1 saved, 0 skipped, 0 failed" in capsys.readouterr().out
 
 
@@ -80,17 +80,17 @@ def test_rerun_skips_existing_and_force_overwrites(tmp_path, capsys, fake_networ
     saved = next(out.glob("*.txt"))
 
     def changed_fetch(video_id, languages=("en",), api=None):
-        return ["Changed text."]
+        return [(0.0, "Changed text.")]
     monkeypatch.setattr(fetcher, "fetch_transcript", changed_fetch)
 
     # second run: file exists -> skipped, content untouched, still exit 0
     assert cli.main([GOOD_ID, "-o", str(out)]) == 0
     assert "1 skipped" in capsys.readouterr().out
-    assert saved.read_text(encoding="utf-8") == "Hello world. More text here.\n"
+    assert saved.read_text(encoding="utf-8") == "[0:00] Hello world. More text here.\n"
 
     # --force overwrites
     assert cli.main([GOOD_ID, "-o", str(out), "--force"]) == 0
-    assert saved.read_text(encoding="utf-8") == "Changed text.\n"
+    assert saved.read_text(encoding="utf-8") == "[0:00] Changed text.\n"
 
 
 def test_lang_flag_passes_priority_list(tmp_path, fake_network):
