@@ -23,6 +23,7 @@ uv run yt-transcribe <url> [<url> …]           # one or more videos
 uv run yt-transcribe -f videos.txt -o ./out    # list file; positional URLs may be mixed in
 uv run yt-transcribe --lang ru,en <url>        # caption language priority
 uv run yt-transcribe --force <url>             # overwrite existing output files
+uv run yt-transcribe --version                 # print the installed version
 ```
 
 ### Flags
@@ -33,6 +34,7 @@ uv run yt-transcribe --force <url>             # overwrite existing output files
 | `-o, --output DIR` | `./transcripts/` | Output folder, created if missing |
 | `--lang CODES` | `en` | Comma-separated caption-language priority list |
 | `--force` | off | Overwrite existing `.txt` files (default: skip already-downloaded) |
+| `--version` | — | Print the installed version and exit |
 
 ### Accepted video references
 
