@@ -12,7 +12,7 @@ file per video with `[M:SS]`-stamped paragraphs.
 The authoritative design spec is
 `docs/superpowers/specs/2026-07-31-youtube-transcription-design.md` — read it
 before implementing or changing behavior. Deliberate non-goals (Whisper
-fallback, parallelism, timestamps, playlists) are listed there; don't add them
+fallback, parallelism, playlists) are listed there; don't add them
 unprompted.
 
 ## Commands
